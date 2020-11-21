@@ -7,7 +7,7 @@ cairo = lgi.cairo
 gtk.init()
 
 bld = gtk.Builder()
-bld:add_from_file('lab-07_Alekseev.glade')
+bld:add_from_file('lab-07.glade')
 
 prov = gtk.CssProvider()
 prov:load_from_path('styles.css')
@@ -183,7 +183,7 @@ function btn_d(cr)
 ui.canvas:queue_draw()
 end
 
-ui.wind.title = 'lab-07_Alekseev_Igor'
+
 ui.wind.on_destroy = gtk.main_quit
 ui.wind:show_all()
 
