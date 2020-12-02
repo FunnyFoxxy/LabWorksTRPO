@@ -119,9 +119,9 @@ function btn_b(cr)
 					paint(x * 10 + 15, y * 10 + 15, 0.1, 1, 0.25, cr)
 				else
 					if ((x == 5 or x == 6 or x == 8 or x == 9) and (y == 7 or y == 9)) then
-						paint(x * 10 + 15, y * 10 + 15, 0.15, 0.15, 0.15, cr)
+						paint(x * 10 + 15, y * 10 + 15, 0.15, 0.68, 0.15, cr)
 					elseif (x == 7 and y == 8) then
-						paint(x * 10 + 15, y * 10 + 15, 0.15, 0.15, 0.15, cr)
+						paint(x * 10 + 15, y * 10 + 15, 0.15, 0.95, 0.15, cr)
 					else
 						paint(x * 10 + 15, y * 10 + 15, 1, 1, 1, cr)
 					end
