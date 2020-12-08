@@ -1,53 +1,72 @@
 local lgi = require 'lgi'
-
 local gtk = lgi.Gtk
+local gdk = lgi.Gdk
 
+gtk.init()
 
 local bld = gtk.Builder()
 bld:add_from_file('lab-09.glade')
+
+local prov = gtk.CssProvider()
+prov:load_from_path('styles.css')
+
+context = gtk.StyleContext()
+screen = gdk.Screen.get_default()
+context.add_provider_for_screen(screen, prov,
+gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
 local ui = bld.objects
 
 local x = 0
 local y = 0
 
-local btn = false
+local btn_check = false
 
-local cr = 0
-local sg = 0 
-local sd = 0
+local r = 0
+local g = 0
+local b = 0
+local a = 255
 
-function ui.canvas:on_button_press_event(evt)
-	print('press')
-	btn = true
+function btnl_check(ev, str, b)-- mouse down
+	if ev.button == 1 then
+		print(str)
+		btn_check = b
+		ui.canvas:queue_draw()
+	end
+end
+
+function ui.canvas:on_button_press_event(ev)-- mouse down
+	btnl_check(ev, 'press', true)
+end
+
+function ui.canvas:on_button_release_event(ev)-- mouse up
+	btnl_check(ev, 'release', false)
+end
+
+function ui.canvas:on_motion_notify_event(ev)
+	print(ev.x, ev.y)
+	x = ev.x
+	y = ev.y
 	ui.canvas:queue_draw()
 end
 
-function ui.canvas:on_button_release_event(evt)
-	print('release')
-	btn = false
+function ui.controller_red:on_value_changed()
+	r = ui.controller_red:get_value()
 	ui.canvas:queue_draw()
 end
 
-function ui.canvas:on_motion_notify_event(evt)
-	print(evt.x, evt.y)
-	x = evt.x
-	y = evt.y
+function ui.controller_green:on_value_changed()
+	g = ui.controller_green:get_value()
 	ui.canvas:queue_draw()
 end
 
-function ui.scl_r:on_value_changed()
-	sr = ui.scl_r:get_value{ }
+function ui.controller_blue:on_value_changed()
+	b = ui.controller_blue:get_value()
 	ui.canvas:queue_draw()
 end
 
-function ui.scl_g:on_value_changed()
-	sg = ui.scl_g:get_value{ }
-	ui.canvas:queue_draw()
-end
-
-function ui.scl_b:on_value_changed()
-	sb = ui.scl_b:get_value{ }
+function ui.controller_alpha:on_value_changed()
+	a = ui.controller_alpha:get_value()
 	ui.canvas:queue_draw()
 end
 
@@ -55,20 +74,17 @@ function ui.canvas:on_draw(cr)
 	cr:set_source_rgb(1, 1, 1, 1)
 	cr:paint()
 
-	cr:set_source_rgb(sr, sg, sb, 1)
-	if btn == false then 
-	cr: rectangle(x-5, y - 5, 10, 10)
+	cr:set_source_rgba(r / 255, g / 255, b / 255, a / 255)
+	if not(btn_check) then
+		cr:rectangle(x - 5, y - 5, 10, 10)
 	else
-	cr:rectangle(x - 10, y - 10, 20, 20)
-end
+		cr:rectangle(x - 10, y - 10, 20, 20)
+	end
 	cr:fill()
 end
 
-function ui.wnd:on_destroy()
-	gtk.main_quit()
-end
+ui.wind.title = 'lab-09_Alekseev_Igor'
+ui.wind.on_destroy = gtk.main_quit
+ui.wind:show_all()
 
-
-ui.wnd:show_all()
 gtk.main()
-
