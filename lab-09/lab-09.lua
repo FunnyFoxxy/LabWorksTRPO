@@ -83,7 +83,6 @@ function ui.canvas:on_draw(cr)
 	cr:fill()
 end
 
-ui.wind.title = 'lab-09_Alekseev_Igor'
 ui.wind.on_destroy = gtk.main_quit
 ui.wind:show_all()
 
